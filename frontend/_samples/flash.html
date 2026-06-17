@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Media Engine - Flash & Delay Effects</title>
+    <style>
+        * { box-sizing: border-box; }
+        
+        body { 
+            background: #0f172a; 
+            color: #f8fafc; 
+            font-family: sans-serif; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            min-height: 100vh; 
+            margin: 0; 
+            overflow: hidden; 
+        }
+
+        .interactive-wrapper { 
+            position: relative; 
+            width: 95vw; 
+            max-height: 95vh;
+            aspect-ratio: 16/9; 
+            background: #000; 
+            border-radius: 12px; 
+            overflow: hidden; 
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+
+        /* 1. Media Assets Transitions */
+        .media-asset { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            /* Quick snap transitions to align perfectly with the white camera flash peak */
+            transition: opacity 0.3s ease-out; 
+        }
+        
+        .media-asset.hidden { opacity: 0; pointer-events: none; }
+        .media-asset.visible { opacity: 1; }
+
+        /* 2. ⚡ THE WHITE FLASH ELEMENT OVERLAY */
+        .flash-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 15; /* Sits completely above the video and image elements */
+        }
+
+        /* Triggers via JavaScript when class is applied */
+        .flash-active {
+            animation: cameraFlash 0.6s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+        }
+
+        @keyframes cameraFlash {
+            0% { opacity: 0; }
+            15% { opacity: 1; } /* Rapid explosion to pure blinding white */
+            100% { opacity: 0; } /* Smooth decay/fade out revealing the background image */
+        }
+
+        /* 3. Overlay & Text Hotspots CSS Entry Transitions */
+        .overlay-layer { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            pointer-events: none; 
+            z-index: 10; 
+        }
+
+        .interactive-link { 
+            position: absolute; 
+            pointer-events: auto; 
+            transform: translate(-50%, -50%) scale(0.9); /* Starts slightly scaled down */
+            padding: 10px 20px; 
+            background: #fff; 
+            color: #0f172a; 
+            text-decoration: none; 
+            font-weight: 700; 
+            font-size: 14px; 
+            border-radius: 6px; 
+            box-shadow: 0 10px 15px rgba(0,0,0,0.3); 
+            opacity: 0; /* Starts invisible */
+            /* Native CSS entry fade animation */
+            transition: opacity 0.5s ease-out, transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.2s; 
+        }
+
+        /* Applied directly by JS when the delay timer completes */
+        .interactive-link.loaded {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1); /* Pops up elegantly into full size */
+        }
+
+        .interactive-link.loaded:hover { 
+            background: #2563eb; 
+            color: #fff; 
+            transform: translate(-50%, -50%) scale(1.08); 
+        }
+    </style>
+</head>
+<body>
+
+    <div class="interactive-wrapper" id="canvasWrapper">
+        <video id="videoSource" class="media-asset visible" src="public/video/CT-1.mp4" playsinline muted autoplay></video>
+        <img id="imageSource" class="media-asset hidden" src="public/images/CT-still-1.PNG" alt="Freeze Frame Background">
+        
+        <!-- 🚀 THE FLASH LAYER OBJECT -->
+        <div id="flashOverlay" class="flash-layer"></div>
+        
+        <div class="overlay-layer" id="overlayContainer"></div>
+    </div>
+
+<script>
+const HOTSPOT_DATA = [
+    { id: "link-1", text: "⏱️ Mid-Video Link (12s - 16s)", url: "https://blender.org", startTime: 12.0, endTime: 16.0, x: 25.0, y: 35.0 },
+    { id: "link-2", text: "🚀 Learn More (Starts 14.5s)", url: "https://blender.org", startTime: 14.5, endTime: 999.0, x: 65.0, y: 50.0 },
+    { id: "link-3", text: "🛒 Shop Merchandise (Starts 17s)", url: "https://blender.org", startTime: 17.0, endTime: 999.0, x: 50.0, y: 75.0 }
+];
+
+class InteractiveMediaEngine {
+    constructor(cId, vId, iId, oId, fId, data) {
+        this.wrapper = document.getElementById(cId);
+        this.video = document.getElementById(vId);
+        this.image = document.getElementById(iId);
+        this.overlay = document.getElementById(oId);
+        this.flash = document.getElementById(fId); // Flash target node
+        this.dataset = data;
+        this.activeNodes = new Map();
+        this.isStaticState = false;
+
+        this.video.addEventListener('timeupdate', () => { if (!this.isStaticState) this.evaluateTimeline(); });
+        this.video.addEventListener('ended', () => this.executeHandoff());
+        
+        window.addEventListener('resize', () => this.recalcTypography());
+        this.recalcTypography();
+    }
+
+    evaluateTimeline() {
+        const t = this.video.currentTime;
+        this.dataset.forEach(item => {
+            const visible = t >= item.startTime && t <= item.endTime;
+            if (visible && !this.activeNodes.has(item.id)) this.injectLink(item);
+            else if (!visible && this.activeNodes.has(item.id)) this.purgeLink(item.id);
+        });
+    }
+
+    executeHandoff() {
+        this.isStaticState = true;
+
+        // 1. ⚡ Trigger the Flash Animation instantly
+        this.flash.classList.add('flash-active');
+
+        // 2. Mid-flash swap: Swap the background asset exactly at the flash's brightest peak (100ms in)
+        setTimeout(() => {
+            this.video.classList.replace('visible', 'hidden');
+            this.image.classList.replace('hidden', 'visible');
+            
+            // Clear out temporary elements whose durations ended
+            this.activeNodes.forEach((node, id) => {
+                if (this.dataset.find(d => d.id === id)?.endTime <= this.video.duration) this.purgeLink(id);
+            });
+        }, 100);
+
+        // 3. ⏱️ LINK DELAY COORDINATOR: Wait for flash to fully fade out (600ms) before rendering links
+        setTimeout(() => {
+            this.dataset.forEach(item => {
+                if (item.endTime >= this.video.duration && !this.activeNodes.has(item.id)) {
+                    this.injectLink(item);
+                }
+            });
+
+            // Smoothly cascade visibility to the final frameset buttons
+            this.activeNodes.forEach(node => {
+                // Request a reflow frame check so the transition handles cleanly
+                requestAnimationFrame(() => {
+                    node.classList.add('loaded');
+                });
+            });
+        }, 600); // 600ms delays alignment entirely until flash finishes decaying
+    }
+
+    injectLink(item) {
+        const link = document.createElement('a');
+        link.id = item.id; link.href = item.url; link.target = '_blank';
+        link.className = 'interactive-link'; link.innerText = item.text;
+        link.style.left = `${item.x}%`; link.style.top = `${item.y}%`;
+        
+        // If we are already past video runtime, keep hidden until the global delay fires loaded triggers
+        if (this.isStaticState) {
+            link.classList.remove('loaded');
+        } else {
+            // Live items popping in mid-video display instantly
+            link.classList.add('loaded');
+        }
+
+        this.overlay.appendChild(link);
+        this.activeNodes.set(item.id, link);
+        this.recalcTypography();
+    }
+
+    purgeLink(id) {
+        this.activeNodes.get(id)?.remove();
+        this.activeNodes.delete(id);
+    }
+
+    recalcTypography() {
+        const w = this.wrapper.getBoundingClientRect().width;
+        const size = Math.max(11, Math.min(22, w * 0.0165));
+        this.activeNodes.forEach(node => {
+            node.style.fontSize = `${size}px`;
+            node.style.padding = `${size * 0.5}px ${size * 1.1}px`;
+            node.style.borderRadius = `${size * 0.4}px`;
+        });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Initializing with the 5th parameter tracking 'flashOverlay'
+    new InteractiveMediaEngine('canvasWrapper', 'videoSource', 'imageSource', 'overlayContainer', 'flashOverlay', HOTSPOT_DATA);
+});
+</script>
+</body>
+</html>

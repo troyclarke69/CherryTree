@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CherryTreeCo.</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: system-ui, -apple-system, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        /* 1. The Core Responsive Container Layout */
+        .interactive-wrapper {
+            position: relative;
+            max-width: 800px;
+            width: 90%;
+            aspect-ratio: 16 / 9; /* Lock aspect ratio to match your video */
+            background: #000;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        /* The HTML5 video element must fill the container entirely */
+        .interactive-wrapper video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Keeps scaling consistent with percentage overlays */
+            display: block;
+        }
+
+        /* 2. The Interactive Pointer Event Overlay */
+        .overlay-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Let clicks pass through to video controls if needed */
+            z-index: 10;
+        }
+
+        /* 3. The Dynamic Text Link Component */
+        .interactive-link {
+            position: absolute;
+            pointer-events: auto; /* Re-enable clicks specifically for our buttons */
+            transform: translate(-50%, -50%); /* Anchor coordinate directly to middle of text */
+            padding: 8px 16px;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #000000;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            border-radius: 4px;
+            white-space: nowrap;
+            transition: transform 0.1s ease, background-color 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .interactive-link:hover {
+            background-color: #3b82f6;
+            color: #ffffff;
+            transform: translate(-50%, -50%) scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <h1 style="margin-bottom: 20px; font-size: 24px;"></h1>
+
+    <!-- The Container Wrapper -->
+    <div class="interactive-wrapper" id="videoContainer">
+       <video 
+            id="videoTarget" 
+            src="/public/video/CT-1.mp4" 
+            controls 
+            playsinline>
+        </video>
+        <div class="overlay-layer" id="overlayLayer"></div>
+    </div>
+
+<script>
+/**
+ * 4. The Interactive Timeline Data Structure
+ * Coordinates are defined strictly as X/Y percentages (0 to 100).
+ */
+const TIMELINE_DATA = [
+    {
+        id: "link-1",
+        text: "View Projects",
+        url: "https://go.somewhere",
+        startTime: 2.0,
+        endTime: 7.5,
+        x: 30.0, // 30% from the left edge
+        y: 40.0  // 40% from the top edge
+    },
+    {
+        id: "link-2",
+        text: "📺 Contact me",
+        url: "https://go.somewhere.else",
+        startTime: 5.0,
+        endTime: 12.0,
+        x: 75.0, // 75% from the left edge
+        y: 65.0  // 65% from the top edge
+    }
+];
+
+class InteractiveVideoPlayer {
+    constructor(containerId, videoId, overlayId, timelineData) {
+        this.container = document.getElementById(containerId);
+        this.video = document.getElementById(videoId);
+        this.overlay = document.getElementById(overlayId);
+        this.data = timelineData;
+        
+        // Track actively rendered DOM elements to prevent thrashing
+        this.activeElements = new Map();
+
+        this.init();
+    }
+
+    init() {
+        // Core Loop: Listen to the high-frequency timeline update event
+        this.video.addEventListener('timeupdate', () => this.updateTimeline());
+
+        // Recalculation Engine: Listen to viewport changes and fullscreen states
+        window.addEventListener('resize', () => this.handleRecalculation());
+        document.addEventListener('fullscreenchange', () => this.handleRecalculation());
+    }
+
+    /**
+     * State Sync Engine
+     * Evaluates whether objects should be injected or removed at the current millisecond.
+     */
+    updateTimeline() {
+        const currentTime = this.video.currentTime;
+
+        this.data.forEach(item => {
+            const shouldBeVisible = currentTime >= item.startTime && currentTime <= item.endTime;
+            const isCurrentlyRendered = this.activeElements.has(item.id);
+
+            if (shouldBeVisible && !isCurrentlyRendered) {
+                this.renderLink(item);
+            } else if (!shouldBeVisible && isCurrentlyRendered) {
+                this.removeLink(item.id);
+            }
+        });
+    }
+
+    /**
+     * Injects a responsive text node into the DOM coordinate space
+     */
+    renderLink(item) {
+        const linkNode = document.createElement('a');
+        linkNode.id = item.id;
+        linkNode.href = item.url;
+        linkNode.target = '_blank';
+        linkNode.className = 'interactive-link';
+        linkNode.innerText = item.text;
+
+        // Apply initial responsive percentages directly to inline CSS
+        linkNode.style.left = `${item.x}%`;
+        linkNode.style.top = `${item.y}%`;
+
+        this.overlay.appendChild(linkNode);
+        this.activeElements.set(item.id, linkNode);
+    }
+
+    /**
+     * Safely clears an element from the canvas memory track
+     */
+    removeLink(id) {
+        const node = this.activeElements.get(id);
+        if (node) {
+            node.remove();
+            this.activeElements.delete(id);
+        }
+    }
+
+    /**
+     * Recalculation Handler
+     * Handles scaling adjustments. Because coordinates are hardcoded as percentages,
+     * CSS handles resizing natively. This block updates typography scales dynamically
+     * to keep text size proportional during full-screen switches.
+     */
+    handleRecalculation() {
+        // Read the actual active width of the bounding wrapper right now
+        const currentWidth = this.container.getBoundingClientRect().width;
+        
+        // Base dynamic font size calculated proportionally off layout scale (e.g., ~1.75% of container width)
+        const optimizedFontSize = Math.max(12, Math.min(24, currentWidth * 0.0175));
+
+        this.activeElements.forEach(element => {
+            element.style.fontSize = `${optimizedFontSize}px`;
+            element.style.padding = `${optimizedFontSize * 0.5}px ${optimizedFontSize}px`;
+        });
+    }
+}
+
+// Instantiate the architecture when the DOM completes loading
+document.addEventListener('DOMContentLoaded', () => {
+    new InteractiveVideoPlayer('videoContainer', 'videoTarget', 'overlayLayer', TIMELINE_DATA);
+});
+</script>
+
+</body>
+</html>
