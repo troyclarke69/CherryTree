@@ -56,10 +56,10 @@ function App() {
     }
   }, [adminToken])
 
-  const projectCategories = useMemo(
-    () => Array.from(new Set(projects.map((project) => project.category))).sort(),
-    [projects],
-  )
+  // const projectCategories = useMemo(
+  //   () => Array.from(new Set(projects.map((project) => project.category))).sort(),
+  //   [projects],
+  // )
 
   async function handleContactSubmit(payload: ContactPayload) {
     await postContact(payload)
@@ -100,12 +100,12 @@ function App() {
     setContents((current) => current.filter((contentItem) => contentItem.id !== contentId))
   }
 
-  function handleLogout() {
-    setAdminToken(null)
-    setView('home')
-  }
+  // function handleLogout() {
+  //   setAdminToken(null)
+  //   setView('home')
+  // }
 
-  const heroContent = contents.find((item) => item.section.toLowerCase() === 'hero')
+  // const heroContent = contents.find((item) => item.section.toLowerCase() === 'hero')
 
   if (view === 'splash') {
     return <SplashPage onEnter={() => setView('home')} />
