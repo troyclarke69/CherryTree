@@ -1,17 +1,19 @@
 :root {
-  --text: #373742;
-  --text-h: #6243c6;
-  --bg: #fff;
+  --text-light: #837f9b;
+  --text: #bfc1a7;
+  --text-h: #6a9a76;
+  --bg: #c6c0d2;
+  --bg-dark: #1d2346;
   --border: #e5e4e7;
   --code-bg: #f4f3ec;
-  --accent: #5e51a9;
-  --accent-bg: rgba(50, 28, 103, 0.1);
+  --accent: #bbb6d8;
+  --accent-bg: rgba(113, 84, 181, 0.1);
   --accent-border: rgba(94, 65, 116, 0.5);
   --social-bg: rgba(244, 243, 236, 0.5);
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --sans: Roboto, system-ui, 'Segoe UI', sans-serif;
   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
@@ -32,8 +34,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
+    --text: #c9d4e8;
+    --text-h: #f7f8fb;
     --bg: #16171d;
     --border: #2e303a;
     --code-bg: #1f2028;
@@ -55,7 +57,6 @@
   max-width: 100%;
   margin: 0 auto;
   text-align: center;
-  border-inline: 1px solid var(--border);
   min-height: 100svh;
   display: flex;
   flex-direction: column;

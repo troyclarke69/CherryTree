@@ -11,7 +11,7 @@ body,
 body {
   margin: 0;
   min-height: 100vh;
-  background-color: #ccd3e1;
+  background-color: #161b2b;
   /* background-image:
     linear-gradient(rgba(15, 36, 76, 0.92), rgba(15, 36, 76, 0.92)),
     url('/images/dark-blue.png'); */
@@ -33,23 +33,31 @@ body {
 }
 
 .app-header {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: minmax(320px, 1fr) minmax(280px, auto);
   align-items: center;
-  gap: 16px;
+  justify-items: stretch;
+  gap: 20px;
+  min-height: auto;
+}
+
+.app-header > * {
+  min-width: 0;
 }
 
 .brand-copy {
   min-width: 320px;
+  position: relative;
+  display: grid;
+  place-items: center start;
 }
 
 .eyebrow {
-  margin: 0 0 12px;
-  letter-spacing: 0.2em;
+  margin: 0 0 1px;
+  letter-spacing: .3em;
   /* text-transform: uppercase; */
-  font-size: 1.1rem;
-  color: var(--text);
+  font-size: 1.2rem;
+  color: #eeedf0;
 }
 
 .app-header h1 {
@@ -85,7 +93,7 @@ body {
 .loading-state,
 .empty-state,
 .admin-message {
-  color: var(--text);
+  color: var(--text-light);
   font-size: 1rem;
 }
 
@@ -116,7 +124,7 @@ body {
   max-width: none;
   max-height: none;
   aspect-ratio: auto;
-  background: #7c8caa;
+  background: #a2b6dd;
   border-radius: 0;
   overflow: hidden;
   box-shadow: none;
@@ -177,7 +185,7 @@ body {
   pointer-events: auto;
   transform: translate(-50%, -50%) scale(0.9);
   padding: 10px 20px;
-  background-color: rgba(75, 85, 108, 0.7);
+  background-color: rgba(75, 85, 108, 1);
   color: #f8fafc;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -221,9 +229,16 @@ body {
 .hero-section {
   display: grid;
   gap: 24px;
-  padding: 32px;
-  background: var(--code-bg);
-  border-radius: 24px;
+  padding: 40px 32px 32px;
+  margin-left: clamp(260px, 18vw, 380px);
+  max-width: 820px;
+  min-width: 0;
+  background: rgba(47, 52, 63, 0.82);
+  border-radius: 20px;
+}
+
+.hero-copy {
+  padding-top: 16px;
 }
 
 .hero-copy h2 {
@@ -235,6 +250,7 @@ body {
   margin: 0;
   max-width: 760px;
   font-size: 1.05rem;
+  line-height: 1.8;
 }
 
 .hero-categories {
@@ -244,11 +260,54 @@ body {
 }
 
 .hero-chip {
-  background: rgba(99, 102, 241, 0.12);
+  /* background: rgba(11, 12, 62, 0.12); */
   color: #27272a;
   padding: 10px 14px;
   border-radius: 999px;
   font-size: 0.95rem;
+}
+
+.app-footer {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  align-items: stretch;
+}
+
+.footer-card {
+  background: rgba(47, 52, 63, 0.82);
+  border-radius: 20px;
+  padding: 24px;
+  min-width: 0;
+}
+
+.footer-card strong {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 1rem;
+}
+
+.footer-card p {
+  margin: 0;
+  line-height: 1.7;
+  color: var(--text-light);
+}
+
+.footer-admin-button {
+  display: inline-block;
+  width: 40%;
+  /* border: 1px solid var(--border); */
+  background: var(--bg-dark);
+  color: var(--text-light);
+  padding: 8px 4px 8px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.footer-admin-button:hover {
+  background: var(--accent-bg);
+  border-color: var(--accent-border);
 }
 
 .content-blocks,
@@ -270,7 +329,7 @@ body {
   gap: 32px;
   grid-template-columns: minmax(320px, 1.2fr) minmax(320px, 0.8fr);
   align-items: start;
-  color: var(--text);
+  color: var(--text-light);
   min-width: 0;
 }
 
@@ -295,7 +354,7 @@ body {
 .admin-form,
 .contact-panel,
 .contact-form {
-  background: rgba(116, 139, 186, 0.82);
+  background: rgba(47, 52, 63, 0.82);
   border-radius: 20px;
   padding: 24px;
 }
@@ -317,9 +376,9 @@ body {
 .content-card,
 .project-card,
 .admin-list li {
-  background: rgba(241, 236, 236, 0.801);
+  background: transparent;
   border: none;
-  border-radius: 18px;
+  border-radius: 0;
   padding: 18px;
 }
 
@@ -327,7 +386,7 @@ body {
 .project-category {
   display: inline-flex;
   background: rgba(37, 47, 63, 0.22);
-  color: #052784;
+  color: var(--text-light);
   padding: 6px 10px;
   border-radius: 999px;
   font-size: 0.85rem;
@@ -344,7 +403,7 @@ body {
 
 .project-links a {
   margin-left: 10px;
-  color: var(--accent);
+  color: var(--bg);
   text-decoration: none;
 }
 
@@ -357,7 +416,7 @@ body {
 
 .project-tag {
   background: rgba(29, 3, 13, 0.22);
-  color: #34116c;
+  color: var(--text-light);
   padding: 6px 10px;
   border-radius: 999px;
   font-size: 0.85rem;
@@ -385,7 +444,7 @@ textarea {
   border-radius: 14px;
   padding: 14px 16px;
   background: var(--bg);
-  color: var(--text-h);
+  color: var(--text);
   font: inherit;
 }
 

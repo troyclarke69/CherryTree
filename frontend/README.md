@@ -71,3 +71,20 @@ export default defineConfig([
   },
 ])
 ```
+
+* ********************************************************************* *
+
+# FLY NOTES
+Commit all to Github
+cd backend
+fly launch --no-deploy
+
+* VERY IMPORTANT!!
+fly secrets set DATABASE_URL="postgresql://user:pass@host:5432/db" 
+            set CORS_ORIGINS="http://localhost:5173,https://cherrytree.netlify.app"
+
+            set ADMIN_EMAIL= <not set -but could be, default from not sure where?>
+            set ADMIN_PASSWORD= <not set -but could be, default from not sure where?>
+
+fly deploy
+fly logs 

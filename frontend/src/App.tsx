@@ -114,9 +114,23 @@ function App() {
   return (
     <main className="app-shell">
       <header className="app-header">
-        <div className="brand-copy">
-          <h2 className="eyebrow">CherryTreeCo.</h2>
-          <h1>-- Let's make it work.</h1>
+        <div className="brand-copy"> 
+           <img
+            className="eyebrow"
+            src="./public/images/ct-410x410.png"
+            style={{  
+                    position: 'absolute',
+                    top: 10,
+                    left: 10,       
+                    width: '200px', 
+                    height: 'auto' ,
+                    // border: '2px solid grey',
+                    boxShadow: '0px 0px 0px 0px rgba(133, 120, 120, 0.25)'
+                    // borderRadius: '8px'
+            }} 
+            alt="CherryTreeCo."
+          />
+          {/* <h2>Slightly distracted by shiny things.</h2> */}
         </div>
       </header>
 
@@ -125,12 +139,12 @@ function App() {
       ) : view === 'home' ? (
         <div className="page-content">
 
-          {/* <section className="hero-section">
+          <section className="hero-section">
             <div className="hero-copy">
-              <h2>{heroContent?.section || 'Welcome'}</h2>
-              <p>{heroContent?.blurb || 'Delivering modern websites, polished messaging, and reliable business operations.'}</p>
+              {/* <h2>{heroContent?.section || 'Welcome'}</h2> */}
+              <h3>Delivering modern websites, polished messaging, and reliable business operations.</h3>
             </div>
-            {projectCategories.length > 0 ? (
+            {/* {projectCategories.length > 0 ? (
               <div className="hero-categories">
                 {projectCategories.map((category) => (
                   <span key={category} className="hero-chip">
@@ -138,8 +152,8 @@ function App() {
                   </span>
                 ))}
               </div>
-            ) : null}
-          </section> */}
+            ) : null} */}
+          </section>
 
           <ContentBlocks contents={contents} />
           <ProjectList projects={projects} />
@@ -147,14 +161,39 @@ function App() {
           <section className="contact-grid">
             <div className="contact-panel">
               <h2>Contact us to start building</h2>
-              <p>
+              <h4>
                 Let us help you shape the next version of your business website,
                 launch a new product story, or turn your content into a clean,
                 modern digital presence.
-              </p>
+              </h4>
             </div>
             <ContactForm onSubmit={handleContactSubmit} />
           </section>
+
+          <footer className="app-footer">
+            <div className="footer-card">
+              <strong>Ready when you are</strong>
+              <p>More resources and quick links will appear here soon.</p>
+            </div>
+            <div className="footer-card">
+              <strong>Additional link</strong>
+              <p>Placeholder content for later navigation items.</p>
+            </div>
+            <div className="footer-card">
+              <strong>Company info</strong>
+              <p>Use this block for address, hours, or contact notes.</p>
+            </div>
+             <div className="footer-card">
+              <strong>Admin</strong>
+              <button
+                type="button"
+                className="footer-admin-button"
+                onClick={() => setView('admin')}
+              >
+                Admin
+              </button>
+            </div>
+          </footer>
         </div>
       ) : adminToken ? (
         <AdminSection
@@ -171,10 +210,10 @@ function App() {
         </div>
       )}
 
-      <nav className="top-nav">
-          {/* <button type="button" onClick={() => setView('home')} className={view === 'home' ? 'active' : ''}>
+      {/* <nav className="top-nav">
+          <button type="button" onClick={() => setView('home')} className={view === 'home' ? 'active' : ''}>
             Home
-          </button> */}
+          </button>
           <button type="button" onClick={() => setView('admin')} className={view === 'admin' ? 'active' : ''}>
             Admin
           </button>
@@ -183,7 +222,7 @@ function App() {
               Log out
             </button>
           ) : null}
-        </nav>
+        </nav> */}
     </main>
   )
 }
