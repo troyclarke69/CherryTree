@@ -29,6 +29,11 @@ export default function AdminSection({
   const [contentBlurb, setContentBlurb] = useState('')
   const [message, setMessage] = useState<string | null>(null)
 
+  type View = 'splash' | 'home' | 'admin'
+
+  const [view, setView] = useState<View>('admin')
+  const [adminToken, setAdminToken] = useState<string | null>(null)
+
   const createProjectPayload = useMemo(
     () => ({
       title: projectTitle,
@@ -67,11 +72,17 @@ export default function AdminSection({
     setContentBlurb('')
   }
 
+  function handleLogout() {
+    setAdminToken(null)
+    setView('home')
+    console.log(adminToken, view)
+  }
+
   return (
     <section className="admin-section">
       <div className="section-header">
         <h2>Admin</h2>
-        <p>Use this section to manage projects and page content.</p>
+        {/* <p>Use this section to manage projects and page content.</p> */}
       </div>
       <div className="admin-forms-grid">
         <form className="admin-form" onSubmit={handleProjectSubmit}>
@@ -151,6 +162,10 @@ export default function AdminSection({
           </ul>
         </div>
       </div>
+
+      <button type="button" onClick={handleLogout} className="logout-button">
+          Log out
+      </button>
     </section>
   )
 }

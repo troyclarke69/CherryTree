@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     )
 
     app_name: str = "CT API"
-    cors_origins: str = "http://localhost:5173,https://******.netlify.app"
+    cors_origins: str = "http://localhost:5173,https://cherrytree.netlify.app"
 
     database_url: str = "postgresql+asyncpg://postgres:postgres@db:5432/cherrytree"
 
@@ -26,7 +26,7 @@ class Settings(BaseSettings):
     jwt_access_token_minutes: int = 60 * 24 * 7
 
     admin_email: str = "abc@abc.def"
-    admin_password: str = "zazzazoom"
+    admin_password: str = ""
 
 
 settings = Settings()

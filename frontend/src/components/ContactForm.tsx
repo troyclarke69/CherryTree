@@ -32,7 +32,7 @@ export default function ContactForm({ onSubmit }: ContactFormProps) {
   return (
     <section className="contact-section">
       <div className="section-header">
-        <h2>Contact</h2>
+        {/* <h2>Contact</h2> */}
         <p>Send a message and we'll follow up quickly.</p>
       </div>
       <form className="contact-form" onSubmit={handleSubmit}>

@@ -14,12 +14,12 @@ export default function ProjectList({ projects }: ProjectListProps) {
   return (
     <section className="projects-section">
       <div className="section-header">
-        <h2>What type of project do you have in mind?</h2>
+        <h1>What kind of thing do you have in mind?</h1>
         {/* <p>Current work and recent engagements, grouped by category.</p> */}
       </div>
       <div className="project-grid">
         {visibleProjects.map((project) => (
-          <article key={project.id} className="project-card">
+          <article key={project.id} className="project-card-custom">
             <div className="project-card-top">
               <span className="project-category">{project.category}</span>
               <div className="project-links">
@@ -35,7 +35,7 @@ export default function ProjectList({ projects }: ProjectListProps) {
                 ) : null}
               </div>
             </div>
-            <h3>{project.title}</h3>
+            <h2>{project.title}</h2>
             <p>{project.summary}</p>
             <div className="project-tags">
               {project.tech.map((tech) => (

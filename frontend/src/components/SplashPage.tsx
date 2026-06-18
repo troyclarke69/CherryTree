@@ -16,7 +16,7 @@ type Hotspot = {
 const HOTSPOT_DATA: Hotspot[] = [
 //   { id: 'link-1', text: 'Begin the experience', startTime: 9.0, endTime: 15.0, x: 20.0, y: 20.0 },
 //   { id: 'link-2', text: 'See our work', startTime: 16.5, endTime: 26.0, x: 65.0, y: 70.0 },
-  { id: 'link-3', text: 'Enter site', startTime: 12.0, endTime: 999.0, x: 75.0, y: 15.0 },
+  { id: 'link-3', text: 'Enter site', startTime: 17.0, endTime: 999.0, x: 75.0, y: 15.0 },
 ]
 
 export default function SplashPage({ onEnter }: SplashPageProps) {

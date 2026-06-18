@@ -117,12 +117,12 @@ function App() {
         <div className="brand-copy"> 
            <img
             className="eyebrow"
-            src="./public/images/ct-410x410.png"
+            src="/images/ct-410x410.png"
             style={{  
                     position: 'absolute',
                     top: 10,
                     left: 10,       
-                    width: '200px', 
+                    width: '250px', 
                     height: 'auto' ,
                     // border: '2px solid grey',
                     boxShadow: '0px 0px 0px 0px rgba(133, 120, 120, 0.25)'
@@ -139,21 +139,11 @@ function App() {
       ) : view === 'home' ? (
         <div className="page-content">
 
-          <section className="hero-section">
-            <div className="hero-copy">
-              {/* <h2>{heroContent?.section || 'Welcome'}</h2> */}
-              <h3>Delivering modern websites, polished messaging, and reliable business operations.</h3>
-            </div>
-            {/* {projectCategories.length > 0 ? (
-              <div className="hero-categories">
-                {projectCategories.map((category) => (
-                  <span key={category} className="hero-chip">
-                    {category}
-                  </span>
-                ))}
-              </div>
-            ) : null} */}
-          </section>
+          <div className="header-tag">
+            {/* <h2>{heroContent?.section || 'Welcome'}</h2> */}
+            <h2>Delivering modern websites, polished messaging, 
+                and reliable business operations.</h2>
+          </div>
 
           <ContentBlocks contents={contents} />
           <ProjectList projects={projects} />
@@ -171,18 +161,28 @@ function App() {
           </section>
 
           <footer className="app-footer">
-            <div className="footer-card">
+            {/* <div className="footer-card">
               <strong>Ready when you are</strong>
               <p>More resources and quick links will appear here soon.</p>
             </div>
             <div className="footer-card">
               <strong>Additional link</strong>
               <p>Placeholder content for later navigation items.</p>
-            </div>
+            </div> */}
             <div className="footer-card">
               <strong>Company info</strong>
-              <p>Use this block for address, hours, or contact notes.</p>
-            </div>
+              <p>Who works for this co.? This <a href="https://troyclarke2026.netlify.app"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  guy.
+                </a>   
+              </p>
+             </div>
+               <div className="footer-card">
+              <strong></strong>
+              <p></p>
+            </div> 
              <div className="footer-card">
               <strong>Admin</strong>
               <button

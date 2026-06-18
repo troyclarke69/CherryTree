@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for backend-radiant-thunder-8398 on 2026-06-14T11:44:35-04:00
+# fly.toml app configuration file generated for backend-azure-smoke-930 on 2026-06-18T14:10:48-04:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'backend-radiant-thunder-8398'
+app = 'backend-azure-smoke-930'
 primary_region = 'yyz'
 
 [build]
