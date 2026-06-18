@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import ContentBlocks from './components/ContentBlocks'
 import ProjectList from './components/ProjectList'
