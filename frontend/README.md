@@ -85,9 +85,9 @@ fly launch --no-deploy
 fly secrets set DATABASE_URL="postgresql://user:pass@host:5432/db" 
             set CORS_ORIGINS="http://localhost:5173,https://cherrytree.netlify.app"
             
-            ** WAS NOT NEEDED **
-            set ADMIN_EMAIL= <not set -but could be, default from not sure where?>
-            set ADMIN_PASSWORD= <not set -but could be, default from not sure where?>
+            ** set to rogers
+            set ADMIN_EMAIL=
+            set ADMIN_PASSWORD=
 
 fly deploy
 fly logs 

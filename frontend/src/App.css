@@ -575,8 +575,153 @@ button[type='submit']:disabled {
   }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 1024px) {
   .app-shell {
-    padding: 20px 16px;
+    padding: 24px 20px;
+    gap: 24px;
+  }
+
+  .hero-section {
+    margin-left: 0;
+    padding: 28px 24px;
+  }
+
+  .header-tag h2 {
+    margin-left: 0;
+    padding: 0 0 8px;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-shell {
+    padding: 18px 14px;
+    gap: 20px;
+  }
+
+  .app-header {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 12px;
+  }
+
+  .brand-copy {
+    min-width: 0;
+    width: 100%;
+    justify-items: center;
+  }
+
+  .brand-copy .eyebrow {
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    width: min(220px, 70vw) !important;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .top-nav {
+    justify-content: center;
+  }
+
+  .hero-section,
+  .footer-card,
+  .project-card-custom,
+  .content-card,
+  .contact-panel,
+  .contact-form,
+  .admin-form,
+  .admin-login-card {
+    padding: 20px;
+  }
+
+  .hero-copy h2 {
+    font-size: clamp(1.3rem, 4vw, 1.8rem);
+  }
+
+  .hero-copy p {
+    font-size: 0.98rem;
+    line-height: 1.7;
+  }
+
+  .header-tag h2 {
+    font-size: clamp(1.15rem, 3.5vw, 1.45rem);
+    line-height: 1.45;
+  }
+
+  .app-footer {
+    grid-template-columns: 1fr;
+  }
+
+  .project-grid,
+  .project-card-top,
+  .project-links {
+    gap: 12px;
+  }
+
+  .project-card-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .project-links a {
+    margin-left: 0;
+    margin-right: 10px;
+  }
+
+  .content-blocks,
+  .projects-section,
+  .contact-section,
+  .admin-section {
+    margin-top: 24px;
+    margin-bottom: 24px;
+    gap: 16px;
+  }
+
+  .contact-form button[type='submit'],
+  .footer-admin-button {
+    width: 100%;
+  }
+
+  input,
+  textarea {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-shell {
+    padding: 14px 12px;
+  }
+
+  .hero-section,
+  .footer-card,
+  .project-card-custom,
+  .content-card,
+  .contact-panel,
+  .contact-form,
+  .admin-form,
+  .admin-login-card {
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  .section-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .top-nav {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .top-nav button,
+  .logout-button,
+  .footer-admin-button {
+    width: 100%;
   }
 }
