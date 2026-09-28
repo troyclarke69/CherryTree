@@ -1,0 +1,20 @@
+# Cherry Tree backend (FastAPI + async SQLAlchemy + Postgres)
+# Install: pip install -r requirements.txt
+# Run:     uvicorn app.main:app --host 0.0.0.0 --port 8000
+
+fastapi>=0.115
+uvicorn[standard]>=0.30
+
+# Async ORM + Postgres driver (DATABASE_URL uses postgresql+asyncpg://)
+sqlalchemy[asyncio]>=2.0
+asyncpg>=0.29
+
+# Settings from .env, and EmailStr validation for contact/login payloads
+pydantic[email]>=2.7
+pydantic-settings>=2.3
+
+# JWT for the admin API, bcrypt password hashing
+python-jose[cryptography]>=3.3
+passlib[bcrypt]>=1.7.4
+# passlib 1.7.4 is incompatible with bcrypt 4.1+ (errors when hashing)
+bcrypt<4.1

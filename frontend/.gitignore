@@ -66,6 +66,8 @@ Thumbs.db
 docker-compose.override.yml
 .dockerignore
 Dockerfile*
+!Dockerfile
+!.dockerignore
 
 # Fly.io metadata
 .fly/
