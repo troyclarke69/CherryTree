@@ -2,6 +2,7 @@
 src/assets
 SIDENOTES.md
 *.txt
+!requirements.txt
 
 # -------------------------
 # PYTHON / FASTAPI BACKEND
